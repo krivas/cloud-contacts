@@ -7,6 +7,7 @@ from data.models import Base
 from sqlalchemy.orm import Session 
 from routers import contacts, users
 from data import models                #ye line add kari hey
+
 app = FastAPI()
 
 def create_db():
