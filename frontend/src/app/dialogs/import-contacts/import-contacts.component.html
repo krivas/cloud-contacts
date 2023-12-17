@@ -1,0 +1,31 @@
+<p-dialog 
+    [header]="'Import Contacts'" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '25vw' , height: '30vw'}" 
+    [draggable]="false" 
+    [resizable]="false"
+    (onHide)="hide(fileInput)"
+    id="dialog">
+
+    <p>To import contacts, select a CSV file</p>
+   
+    <p-button
+    type="button"
+    label="Select File"
+    [rounded]="true"
+    (onClick)="clickFileInput(fileInput)"
+  ></p-button>
+
+  <p class="m-0" style="margin-top: 30px;">
+   {{fileName}}
+</p>
+
+<p-progressBar *ngIf="isUploading" mode="indeterminate" [style]="{ height: '6px','margin-top':'40px' }"></p-progressBar>
+
+  <input type="file" id="myfile" name="myfile" hidden #fileInput  (change)="handleFileSelection($event)">
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" (click)="hide(fileInput)" severity="danger"></p-button>
+    <p-button  (click)="import()" label="Import" ></p-button>
+</ng-template>
+</p-dialog>

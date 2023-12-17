@@ -1,0 +1,44 @@
+
+
+<p-table  #dt1 [value]="users" 
+[tableStyle]="{ 'min-width': '78rem'}"
+dataKey="id"
+[globalFilterFields]="['first_name', 'last_name','email','phone_number']"
+
+>
+<ng-template pTemplate="caption">
+    <div  style="display:flex;justify-content: space-between;">
+        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+        <span class="p-input-icon-left ml-auto" >
+            <i class="pi pi-search"></i>
+            <input pInputText type="text"[(ngModel)]="searchInput"  #textInput (input)="dt1.filterGlobal(textInput.value, 'contains')" placeholder="Search keyword" />
+        </span>
+    </div>
+</ng-template>
+ <ng-template pTemplate="header">
+     <tr>
+         <th>First Name</th>
+         <th>Last Name</th>
+         <th>Email</th>
+         <th>Phone Number</th>
+         <th>Actions</th>
+     </tr>
+ </ng-template>
+ <ng-template pTemplate="body" let-user>
+     <tr>
+         <td>{{ user.first_name  }}</td>
+         <td>{{ user.last_name }}</td>
+         <td>{{ user.email }}</td>
+         <td>{{ user.phone_number}}</td>
+         <td>
+            <i class="pi pi-trash actions" style="color: red ;margin-right:10px;" (click)="delete(user.id)"></i> 
+            <i class="pi pi-undo actions" style="color: green" (click)="recover(user.id)"> </i>
+        </td>
+     </tr>
+ </ng-template>
+ <ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="5">No contacts.</td>
+    </tr>
+</ng-template>
+</p-table>

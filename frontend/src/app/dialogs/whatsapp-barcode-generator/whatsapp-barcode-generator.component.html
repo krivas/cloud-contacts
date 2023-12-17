@@ -1,0 +1,67 @@
+<p-dialog 
+    [header]="'WhatsApp QR code generator'" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '30vw' , height: '850px'}" 
+    [draggable]="false" 
+    [resizable]="false"
+    (onHide)="hide()"
+    id="dialog">
+    <h4>   <i class="pi pi-user" style="margin-right:10px"></i>
+        {{contact.first_name + ' ' + contact.last_name}}</h4>
+    <p>To create your WhatsApp QR code, add your number or select the phone number with WhatsApp</p>
+    
+    <div  class="row">
+        <div class="p-field">
+            <!-- <label for="phoneNumber">Phone Number</label> -->
+            <div class="p-inputgroup" >
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-phone"></i>
+              </span>
+              <input 
+              pInputText placeholder="WhatsApp number" 
+              (ngModelChange)="clearRadios()"
+              [(ngModel)]="whatsapp.phoneNumberText"
+               name="phoneNumber"  />
+    </div></div></div>       
+            
+   <div class="row" style="margin-top:20px">
+
+
+        <div class="flex flex-column gap-3">
+            <div *ngFor="let number of phoneNumbers" class="field-checkbox">
+                <p-radioButton [style]="{ 'margin-top': '15px' }" 
+                  [inputId]="number.id" name="category" 
+                  [value]="number"
+                  (ngModelChange)="clearText()"
+                  [(ngModel)]="selectedPhoneNumber"></p-radioButton>
+                <label [for]="number.id" class="ml-2" style="font-size: 20px;padding: 15px; ">
+                    <i class="pi pi-phone"></i>
+                    {{ formatPhoneNumber(number.phone) }}</label>
+            </div>
+            
+        </div>
+
+      
+
+   </div>
+
+
+    
+    <p-button [style]="{'margin-top':'20px','float':'right'}" 
+      label="Get WhatsApp QR code"
+       icon="pi pi-whatsapp"
+        [rounded]="true"
+        (onClick)="generateQrCode()"></p-button>
+
+  <div class="row" >
+    <img  style="margin-left: 30px;" *ngIf="qrBarcode" [src]="'data:image/png;base64,' + qrBarcode" alt="Whatsapp barcode">
+  </div>   
+  
+  
+  <p-messages *ngIf="canGenerateBarCode==false" [value]="messages" [style]="{'font-size':'14px','margin-top':'80px'}"></p-messages>
+
+<p-messages *ngIf="qrBarcode " [value]="messages" [style]="{'font-size':'14px','margin-top':'-20px'}"></p-messages>
+
+
+</p-dialog>

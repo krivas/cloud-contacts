@@ -1,0 +1,73 @@
+
+  
+    <div class="toolbar" role="banner">
+  
+      <i class="pi pi-cloud" style="font-size: 2rem; margin-left: 10px; margin-right: 5px;"></i>
+      <span>Cloud Contacts</span>
+        <div class="spacer"></div>
+
+        <p-menu #profileMenu [model]="userProfile" [style]="{'min-width':'250px'}" [popup]="true">
+          <ng-template pTemplate="item" let-item>
+            <a  *ngIf="item.label==='Log out'" (click)="logOut()" class="p-menuitem-link flex justify-content-between align-items-center p-3">
+                <div >
+                    <span [class]="item.icon"></span>
+                    <span> {{ item.label }}</span>
+                </div >
+            </a>
+            <a  *ngIf="item.label!='Log out'" class="p-menuitem-link flex justify-content-between align-items-center p-3">
+              <div >
+                  <span [class]="item.icon"></span>
+                  <span> {{ item.label }}</span>
+              </div >
+          </a>
+        </ng-template>
+        </p-menu>
+        <span class="icon-container" (click)="profileMenu.toggle($event)">
+          <span class="pi pi-user" style="font-size: 2.5rem"></span>
+          <span class="pi pi-arrow-circle-down" style="font-size: 0.8rem"></span>
+      </span>
+      
+    </div>
+  
+  
+  <div class="flex-container">
+      <p-toast></p-toast>
+      <p-menu  [style]="{'height': '100vh','margin-left':'-10px','width':'250px'}" [model]="menuItems"
+      >
+        <ng-template pTemplate="item" let-item>
+          <a style="margin-top: 20px" 
+            class=" p-menuitem-link flex justify-content-between align-items-center p-3"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+            [routerLink]="item.routerLink">
+              <div >
+                  <span [class]="item.icon"></span>
+                  <span> {{ item.label }}</span>
+              </div >
+          </a>
+      </ng-template>
+      </p-menu>
+  
+      <div class="content" role="main">
+           <router-outlet></router-outlet>
+      </div>
+  </div>
+  <app-import-contacts  [isOpen]="showImportContacts"></app-import-contacts>
+  
+  
+   
+  
+  
+   
+  
+  
+  
+   
+  
+   
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,81 @@
+<p-table  #dt1 [value]="users" 
+[tableStyle]="{ 'min-width': '78rem','min-height':'18rem' }"
+dataKey="id"
+[globalFilterFields]="['first_name', 'last_name','email','phone_number','relationship']"
+
+>
+
+
+<ng-template pTemplate="caption">
+    <div  style="display:flex;justify-content: space-between;">
+        <div class="flex">
+            <button style="margin-left:5px ;" type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+            <button style="margin-left:5px ;" type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+            <button style="margin-left:5px ;" type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+        </div>
+        <button pButton style="margin-left: 650px;"label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+        <span class="p-input-icon-left ml-auto" >
+            <i class="pi pi-search"></i>
+            <input pInputText type="text"[(ngModel)]="searchInput"  #textInput (input)="dt1.filterGlobal(textInput.value, 'contains')" placeholder="Search keyword" />
+        </span>
+    </div>
+</ng-template>
+ <ng-template pTemplate="header">
+     <tr>
+         <th>First Name</th>
+         <th>Last Name</th>
+         <th>Email</th>
+         <th>Phone Number</th>  
+         <th>Relationship</th>
+         <th>Actions</th>
+         
+     </tr>
+     <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>
+            <p-columnFilter field="relationship"  matchMode="equals" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-dropdown [ngModel]="value" [options]="relationships" [style]="{ 'z-index': '1001'}" (onChange)="filter($event.value)" placeholder="Any" [showClear]="true">
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                        </ng-template>
+                    </p-dropdown>
+                </ng-template>
+            </p-columnFilter>
+        </th>
+        <th>
+       
+        </th>
+     </tr>
+ </ng-template>
+ <ng-template pTemplate="body" let-user>
+     <tr>
+         <td>{{ user.first_name  }}</td>
+         <td>{{ user.last_name }}</td>
+         <td>{{ user.email }}</td>
+         <td>{{ user.phone_number}}</td>
+         <td><p-tag [value]="user.relationship" [severity]="getSeverity(user.relationship)"></p-tag></td>
+         <td>
+
+            <i class="pi pi-eye actions" style="color: blue ;margin-right: 10px;" (click)="viewContact(user.id)"></i> 
+            <i class="pi pi-pencil actions" style="margin-right: 10px; color:black;" (click)="editContact(user.id)"></i>
+            <i class="pi pi-trash actions" style="color: red ; margin-right: 10px;" (click)="passToTrash(user.id)"></i> 
+            <i  *ngIf="!user.is_shared" class="pi pi-share-alt actions" style="color: green ; " (click)="openShareDialog(user)"></i>
+            <i  *ngIf="user.is_shared" class="pi pi-globe actions" style="color: green ; "></i>
+            
+            
+        </td>
+     </tr>
+
+ </ng-template>
+ <ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="5">No contacts.</td>
+    </tr>
+</ng-template>
+</p-table>
+<app-share-contacts [isOpen]="isShareDialogOpen" [contactName]="contactName" [contactId]="contactId"></app-share-contacts>
+

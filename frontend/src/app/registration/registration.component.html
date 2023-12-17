@@ -1,0 +1,98 @@
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">	<section class="login">
+    <div class="login_box">
+      
+      <div class="left">
+        <div class="top_link">
+          <div class="row">
+            <i class="pi pi-arrow-left" style="font-size: 1.5rem;color:gray;cursor:pointer" (click)="goToLogin()">
+            </i>
+          </div>
+        
+        </div>
+        <div class="contact">
+          
+        
+          <form  #registrationForm="ngForm">
+              
+            <h3 style="margin-top: 10px;">SIGN UP</h3>
+          <div class="form-group">
+            <input type="text" placeholder="USERNAME" #username="ngModel" [(ngModel)]="user.username" name="username" required>
+            <p-message 
+            *ngIf="registrationForm.controls['username']?.touched && registrationForm.controls['username'].errors?.['required']"
+                severity="error"
+              [style]="{'width':'550px','margin-top': '-13px'}"
+              text="Username is required">
+          
+            </p-message>
+          </div>
+            
+          <div class="form-group">
+            <input type="email" placeholder="EMAIL" [email]="true" #email="ngModel" [(ngModel)]="user.email" name="email" required>
+            <p-message 
+            *ngIf="registrationForm.controls['email']?.touched && registrationForm.controls['email'].errors?.['required']"
+                severity="error"
+                [style]="{'width':'550px','margin-top': '-13px'}"
+              text="Email is required">
+          
+            </p-message>
+
+            <p-message 
+            *ngIf="registrationForm.controls['email']?.touched && registrationForm.controls['email'].hasError('email')"
+                severity="error"
+                [style]="{'width':'550px','margin-top': '-13px'}"
+              text="Invalid email format">
+                     
+            </p-message>
+           
+            </div>
+            <div class="form-group">
+                <input type="password"  placeholder="PASSWORD" [(ngModel)]="user.password" name="password" minlength="5" required>
+            <p-message 
+                *ngIf="registrationForm.controls['password']?.touched && registrationForm.controls['password'].errors?.['required']"
+                  severity="error"
+                  [style]="{'width':'550px','margin-top': '-13px'}"
+                text="Password is required"></p-message>
+
+                <p-message 
+                *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['minlength']"
+                severity="error"
+                [style]="{'width':'550px','margin-top': '-13px'}"
+              text="Password is too short"></p-message>
+                </div>
+                <div class="form-group">
+                  <input type="password"  placeholder="CONFIRM PASSWORD" [(ngModel)]="user.confirmPassword" name="confirmPassword" required>
+                  <p-message 
+                  *ngIf="registrationForm.controls['confirmPassword']?.touched && registrationForm.controls['confirmPassword'].errors?.['required']"
+                      severity="error"
+                      [style]="{'width':'550px','margin-top': '-13px'}"
+                    text="Confirm password is required">
+                
+                  </p-message>
+
+                  <p-message 
+                  *ngIf="user.password!=user.confirmPassword && registrationForm.controls['confirmPassword'].touched"
+                      severity="error"
+                      [style]="{'width':'550px','margin-top': '-13px'}"
+                    text="Passwords do not match">
+                
+                  </p-message>
+                </div>
+                <div class="form-group" style="padding-bottom: 100px;">
+                  <button class="submit"  [disabled]="registrationForm.invalid" (click)="onSubmit()" >Register</button>
+                  
+                </div>
+                
+        
+          </form>
+        </div>
+      </div>
+      <div class="right">
+        <div class="right-text">
+          <h2>Every new friend is an adventure</h2>
+          <h5>Lets connect!</h5>
+        </div>
+        <div class="right-inductor"><img src="https://lh3.googleusercontent.com/fife/ABSRlIoGiXn2r0SBm7bjFHea6iCUOyY0N2SrvhNUT-orJfyGNRSMO2vfqar3R-xs5Z4xbeqYwrEMq2FXKGXm-l_H6QAlwCBk9uceKBfG-FjacfftM0WM_aoUC_oxRSXXYspQE3tCMHGvMBlb2K1NAdU6qWv3VAQAPdCo8VwTgdnyWv08CmeZ8hX_6Ty8FzetXYKnfXb0CTEFQOVF4p3R58LksVUd73FU6564OsrJt918LPEwqIPAPQ4dMgiH73sgLXnDndUDCdLSDHMSirr4uUaqbiWQq-X1SNdkh-3jzjhW4keeNt1TgQHSrzW3maYO3ryueQzYoMEhts8MP8HH5gs2NkCar9cr_guunglU7Zqaede4cLFhsCZWBLVHY4cKHgk8SzfH_0Rn3St2AQen9MaiT38L5QXsaq6zFMuGiT8M2Md50eS0JdRTdlWLJApbgAUqI3zltUXce-MaCrDtp_UiI6x3IR4fEZiCo0XDyoAesFjXZg9cIuSsLTiKkSAGzzledJU3crgSHjAIycQN2PH2_dBIa3ibAJLphqq6zLh0qiQn_dHh83ru2y7MgxRU85ithgjdIk3PgplREbW9_PLv5j9juYc1WXFNW9ML80UlTaC9D2rP3i80zESJJY56faKsA5GVCIFiUtc3EewSM_C0bkJSMiobIWiXFz7pMcadgZlweUdjBcjvaepHBe8wou0ZtDM9TKom0hs_nx_AKy0dnXGNWI1qftTjAg=w1920-h979-ft" alt=""></div>
+      </div>
+    </div>
+  </section>
+

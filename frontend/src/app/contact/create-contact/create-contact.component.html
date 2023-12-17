@@ -1,0 +1,220 @@
+<!-- Your HTML code -->
+<div class="contact-container">
+    <!-- <h2>Add Contact</h2> -->
+    <div class="image-container">
+        <div>
+            <!-- <img class="LrbNhc tUOMob"
+        src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
+        alt="Contact photo"
+        width="125"
+        height="125"
+        > -->
+        <img
+        [src]="selectedFileUrl ? selectedFileUrl : 'https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png'"
+          alt="Preview"
+          width="125"
+          height="125"
+          style="border-radius: 205px;"
+          (click)="choose(fileInput)"
+        />
+
+        <p-button
+        *ngIf="!selectedFileUrl"
+        type="button"
+        icon="pi pi-plus"
+        [rounded]="true"
+        (onClick)="choose(fileInput)"
+        [style]="{  'margin-left': '-45px' }"
+      ></p-button>
+
+        </div>
+        <button type="button" style="margin-left:82%" pButton icon="pi pi-save" label="Save" (click)="addContact(contactForm)"></button>
+    </div>
+    <form style="margin-left: 0px;" #contactForm="ngForm">
+    <div class="row">
+        <div class="p-field">
+            <label for="firstname">First Name</label>
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-user"></i>
+              </span>
+              <input id="firstname" type="text" pInputText [(ngModel)]="contact.first_name" name="firstname" placeholder="First name" required />
+           
+            </div>
+            <p-message 
+            *ngIf="contactForm.controls['firstname']?.touched && contactForm.controls['firstname'].errors?.['required']"
+                 severity="error"
+                [style]="{'width':'490px','margin-top': '20px'}"
+                 text="First name is required">
+            </p-message>
+          </div>
+
+          
+          <div class="p-field">
+            <label for="lastname">Last Name</label>
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-user"></i>
+              </span>
+              <input id="lastname" type="text" pInputText [(ngModel)]="contact.last_name" name="lastname"  placeholder="Last name" required/>
+         
+            </div>
+            <p-message 
+            *ngIf="contactForm.controls['lastname']?.touched && contactForm.controls['lastname'].errors?.['required']"
+                 severity="error"
+                [style]="{'width':'490px','margin-top': '20px'}"
+                 text="Last name is required">
+            </p-message>
+          </div>
+    </div>
+
+
+    
+         <div  class="row">
+              <div class="p-field">
+                <label for="email">Email</label>
+                <div class="p-inputgroup">
+                  <span class="p-inputgroup-addon">
+                    <i class="pi pi-envelope"></i>
+                  </span>
+                  <input id="email" placeholder="Email"  [email]="true"  type="email" pInputText [(ngModel)]="contact.email" name="email" required/>
+                 
+                </div>
+                <p-message 
+                *ngIf="contactForm.controls['email']?.touched && contactForm.controls['email'].errors?.['required']"
+                     severity="error"
+                     [style]="{'width':'490px','margin-top': '20px', 'display': 'inline-block'}"
+                     text="Email is required">
+                </p-message>
+
+                <p-message *ngIf="contactForm.controls['email']?.touched && contactForm.controls['email'].hasError('email')"
+                severity="error"
+                [style]="{'width':'480px','margin-top': '5px', 'display': 'block'}"
+                text="Invalid email format.">
+                </p-message>
+               
+              </div>
+              <div class="p-field">
+                <label for="email">Relationship</label>
+                <p-dropdown [style]="{ 'margin-left': '5px','margin-top': '9px', 'width': '490px'}"
+                [options]="relationships" 
+                [(ngModel)]="contact.relationship" 
+                [showClear]="true" placeholder="Select a relationship"
+                name="relationship"
+                id="relationship"
+                ></p-dropdown>
+        
+              </div>
+
+         </div> 
+         <div class="row">
+          <div class="p-field">
+            <label for="phoneNumber">Phone Number</label>
+            <div class="p-inputgroup" >
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-phone"></i>
+              </span>
+              <input 
+              [pattern]="phoneNumberPattern" 
+              pInputText placeholder="Phone Number" 
+              [(ngModel)]="contact.phone_number"
+               name="phoneNumber" required>
+            </div>
+            <p-message 
+            *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].errors?.['required']"
+                 severity="error"
+                 [style]="{'width':'490px','margin-top': '20px', 'display': 'inline-block'}"
+                 text="Phone number is required">
+            </p-message>
+  
+            <p-message *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].hasError('pattern')"
+            severity="error"
+            [style]="{'width':'480px','margin-top': '20px', 'display': 'block'}"
+            text="Invalid phone number format. It should be 10 digits.">
+            </p-message>
+          </div>
+          <div class="p-field">
+            <label >Phone Type</label>
+            <p-dropdown [style]="{ 'margin-left': '5px','margin-top': '9px', 'width': '490px'}"
+            [options]="labels" 
+            [(ngModel)]="contact.phone_type" 
+            [showClear]="true" 
+            name="phoneType"
+            id="phoneType"
+            placeholder="Select a phone type"></p-dropdown>
+    
+          </div>
+
+         </div>
+        
+         <div *ngFor="let phoneNumber of phoneNumbers; let i = index;trackBy: trackByFn">
+          <div class="row" >
+            <div class="p-field">
+              <label for="phoneNumber">Phone Number</label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-phone"></i>
+                </span>
+                <input [pattern]="phoneNumberPattern" 
+                        pInputText placeholder="Phone Number" 
+                        [(ngModel)]="phoneNumbers[i]"
+                        name="phone_numbers{{ i }}"
+                        #phoneInput="ngModel"
+                        required
+                        name="phoneNumbers{{ i }}"
+                        id="phoneNumbers{{ i }}"
+                        >
+                </div>
+                      <p-message
+                      *ngIf="phoneInput.touched && phoneInput.hasError('required')"
+                      severity="error"
+                      [style]="{ 'width': '490px', 'margin-top': '20px', 'display': 'inline-block' }"
+                      text="Phone number is required"
+                    ></p-message>
+              
+                    <p-message
+                      *ngIf="phoneInput.touched && phoneInput.hasError('pattern')"
+                      severity="error"
+                      [style]="{ 'width': '480px', 'margin-top': '20px', 'display': 'block' }"
+                      text="Invalid phone number format. It should be 10 digits."
+                    ></p-message>
+            </div>
+              <div class="p-field" style="margin-right: -25px;">
+                  <label >Phone Type</label>
+                  <p-dropdown [style]="{  'width': '440px','margin-left': '9px','margin-top': '9px'}"
+                  [options]="labels" 
+                  [(ngModel)]="phoneTypes[i]" 
+                  name="phoneTypes{{ i }}"
+                  id="phoneTypes{{ i }}"
+                  [showClear]="true"
+                   placeholder="Select a phone type"></p-dropdown>
+               </div>
+
+              
+                <i class="pi pi-times" 
+                (click)="deletePhoneNumber(i)"
+
+                style=" cursor: pointer;font-size: 2.8rem; margin-top:35px; color:red;">
+               </i>
+            </div>
+          </div>
+         
+         <div class="row">
+          <p-button label="Add Phone"
+               [rounded]="true" 
+               [outlined]="true" 
+               icon="pi pi-plus" 
+               [style]="{'width':'490px','margin-left':'15px', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center','font-size':'15px'}"
+               [text]="true" 
+               [raised]="true" 
+               (onClick)="addPhoneNumber()"></p-button>
+
+         
+         </div>
+          
+          
+     
+    </form>
+    <p-messages [value]="messages" [style]="{'font-size':'12px'}"></p-messages>
+  </div>
+  <input type="file" id="myfile" name="myfile" hidden #fileInput  (change)="handleFileSelection($event)">

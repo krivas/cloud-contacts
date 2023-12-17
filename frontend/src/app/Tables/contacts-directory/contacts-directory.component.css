@@ -1,0 +1,7 @@
+.actions
+{
+    cursor: pointer;
+}
+.p-dropdown-panel {
+    z-index: 1001; /* Adjust the value as needed */
+  }
