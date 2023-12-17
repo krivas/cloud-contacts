@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master  # or the branch you want to trigger the workflow on
+      - main  # or the branch you want to trigger the workflow on
 
 jobs:
   backend:
