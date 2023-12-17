@@ -1,3 +1,4 @@
+import codecs
 import os
 import secrets
 from fastapi import APIRouter, Depends, status, HTTPException, File, UploadFile
@@ -230,6 +231,27 @@ async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: S
     db.refresh(contact)
     db.close()
     return "successfuly uploaded"
+
+@router.post("/upload/csv/{userId}")
+def upload(userId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
+    csvReader = csv.DictReader(codecs.iterdecode(file.file, 'utf-8'))
+    for row in csvReader:
+        contact=Contact(first_name=row["first_name"],
+                   last_name=row["last_name"],
+                   phone_number=row["phone_number"],
+                   phone_type=row["phone_type"],
+                   phone_number2=row["phone_number2"],
+                   phone_type2=row["phone_type2"],
+                   phone_number3=row["phone_number3"],
+                   phone_type3=row["phone_type3"],                 
+                   email=row["email"],
+                   relationship=row["relationship"],
+                   user_id=userId)
+        db.add(contact)
+    file.file.close()
+    db.commit()
+    db.close
+    return "contacts uploaded successfully"
 
 
 

@@ -4,63 +4,70 @@ import { Contact } from '../Dtos/Contact';
 import { CreateContact } from '../Dtos/CreateContact';
 import { Photo } from '../Dtos/Photo';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactService {
 
+  private domain:string| undefined;
+  private endpoint:string | undefined;
+
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
+    this.domain=environment.domain;
+    this.endpoint='contacts';
+  }
   addContact(contact:CreateContact) {
-    return this.http.post<Contact>("http://localhost:8000/contacts",contact);
+    return this.http.post<Contact>(`${this.domain}/${this.endpoint}`,contact);
   }
 
   editContact(contactId:number,contact:Contact) {
-    return this.http.put<Contact>(`http://localhost:8000/contacts/edit/${contactId}`,contact);
+    return this.http.put<Contact>(`${this.domain}/${this.endpoint}/edit/${contactId}`,contact);
   }
 
   getContactsByUserIdAndContactId(user_id:number,contact_id:number) {
-    return this.http.get<Contact>(`http://localhost:8000/contacts/${user_id}/${contact_id}`);
+    return this.http.get<Contact>(`${this.domain}/${this.endpoint}/${user_id}/${contact_id}`);
   }
 
   getContacts(user_id:number) {
-    return this.http.get<Contact[]>(`http://localhost:8000/contacts/${user_id}`);
+    return this.http.get<Contact[]>(`${this.domain}/${this.endpoint}/${user_id}`);
   }
 
   getTrashContacts(user_id:number) {
-    return this.http.get<Contact[]>(`http://localhost:8000/contacts/trash/${user_id}`);
+    return this.http.get<Contact[]>(`${this.domain}/${this.endpoint}/trash/${user_id}`);
   }
 
   moveContactToTrash(user_id:number,contactId:number) {
-    return this.http.delete(`http://localhost:8000/contacts/soft/${user_id}/${contactId}`);
+    return this.http.delete(`${this.domain}/${this.endpoint}/soft/${user_id}/${contactId}`);
   }
 
   recoverContactFromTrash(user_id:number,contactId:number) {
-    return this.http.put(`http://localhost:8000/contacts/recover/${user_id}/${contactId}`,null);
+    return this.http.put(`${this.domain}/${this.endpoint}/recover/${user_id}/${contactId}`,null);
   }
   deleteContact(user_id:number,contactId:number) {
-    return this.http.delete(`http://localhost:8000/contacts/hard/${user_id}/${contactId}`);
+    return this.http.delete(`${this.domain}/${this.endpoint}/hard/${user_id}/${contactId}`);
   }
 
   createBarCode(phoneNumber:string) {
-    return this.http.post<string>(`http://localhost:8000/contacts/create/whatsapp/barcode?phone_number=${phoneNumber}`,{});
+    return this.http.post<string>(`${this.domain}/${this.endpoint}/create/whatsapp/barcode?phone_number=${phoneNumber}`,{});
   }
 
   shareContact(contact_id:number,contacts_ids:number[]) {
     const requestBody = { contacts: contacts_ids };
     console.log("ids ", contacts_ids)
-    return this.http.post<string>(`http://localhost:8000/contacts/share/${contact_id}`,contacts_ids);
+    return this.http.post<string>(`${this.domain}/${this.endpoint}/share/${contact_id}`,contacts_ids);
   }
   getContactPicture(contact_id:number) {
 
-    return this.http.get<Photo>(`http://localhost:8000/contacts/profile/photo/${contact_id}`);
+    return this.http.get<Photo>(`${this.domain}/${this.endpoint}/profile/photo/${contact_id}`);
   }
   saveContactPicture(contact_id:number,file:File) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.put<string>(`http://localhost:8000/contacts/upload/profile/${contact_id}`,formData);
+    return this.http.put<string>(`${this.domain}/${this.endpoint}/upload/profile/${contact_id}`,formData);
   }
 
   getPhoneTypes() {
@@ -75,6 +82,6 @@ export class ContactService {
   uploadCSVFile(userId:number,file:File) :Observable<string>{
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<string>(`http://localhost:8000/contacts/upload/csv/${userId}`,formData);
+    return this.http.post<string>(`${this.domain}/${this.endpoint}/upload/csv/${userId}`,formData);
   }
 }

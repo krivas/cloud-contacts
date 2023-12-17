@@ -5,19 +5,25 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { User } from '../Dtos/User';
 import { Router } from '@angular/router';
 import { UserGet } from '../Dtos/UserGet';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-    
+
+  private domain:string| undefined;
+  private endpoint:string | undefined;
     constructor(
       private http:HttpClient,
       private router:Router
-      ) { }
+      ) {
+        this.domain=environment.domain;
+        this.endpoint='users';
+       }
      
      login(user:User)
      {
-      return this.http.post<number>("http://localhost:8000/users/login",user)
+      return this.http.post<number>(`${this.domain}/${this.endpoint}/login`,user)
      }
       logout() {
         localStorage.removeItem("user");
@@ -47,10 +53,10 @@ export class AuthService {
         return localStorage.getItem("username") ;
       }   
       registration(user: any): Observable<any> {
-        return this.http.post<any>(`http://localhost:8000/users/register`, user);
+        return this.http.post<any>(`${this.domain}/${this.endpoint}/register`, user);
       }
 
       getUsers(userId:number): Observable<UserGet[]> {
-        return this.http.get<UserGet[]>(`http://localhost:8000/users/${userId}`);
+        return this.http.get<UserGet[]>(`${this.domain}/${this.endpoint}/${userId}`);
       }
 }
