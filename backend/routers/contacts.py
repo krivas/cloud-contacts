@@ -144,7 +144,7 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
   print("ids ",user_ids)
   for user_id in user_ids:
         contact = db.query(Contact).filter(Contact.id == contact_id).first()
-
+        
         if contact:
             make_transient(contact)
             new_contact = Contact(
@@ -236,14 +236,15 @@ async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: S
 def upload(userId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
     csvReader = csv.DictReader(codecs.iterdecode(file.file, 'utf-8'))
     for row in csvReader:
+        print(row)
         contact=Contact(first_name=row["first_name"],
                    last_name=row["last_name"],
                    phone_number=row["phone_number"],
                    phone_type=row["phone_type"],
-                   phone_number2=row["phone_number2"],
-                   phone_type2=row["phone_type2"],
-                   phone_number3=row["phone_number3"],
-                   phone_type3=row["phone_type3"],                 
+                   phone_number2=None if row["phone_number2"] == '' else row["phone_number2"],
+                   phone_type2=None if row["phone_type2"] == '' else row["phone_type2"],
+                   phone_number3=None if row["phone_number3"] == '' else row["phone_number3"],
+                   phone_type3=None if row["phone_type3"] == '' else row["phone_type3"],               
                    email=row["email"],
                    relationship=row["relationship"],
                    user_id=userId)
