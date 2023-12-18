@@ -17,7 +17,7 @@ export class ContactService {
   constructor(
     private http: HttpClient
   ) {
-    this.domain=environment.domain;
+    this.domain=`https://cloud-contacts-backend.azurewebsites.net`;
     this.endpoint='contacts';
   }
   addContact(contact:CreateContact) {

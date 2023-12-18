@@ -17,13 +17,13 @@ export class AuthService {
       private http:HttpClient,
       private router:Router
       ) {
-        this.domain=environment.domain;
+        this.domain='https://cloud-contacts-backend.azurewebsites.net/';
         this.endpoint='users';
        }
      
      login(user:User)
      {
-      return this.http.post<number>(`https://cloud-contacts-backend.azurewebsites.net/users/login`,user)
+      return this.http.post<number>(`${this.domain}/${this.endpoint}/login`,user)
      }
       logout() {
         localStorage.removeItem("user");
