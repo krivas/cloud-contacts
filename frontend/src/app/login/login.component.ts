@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
 import { AuthService } from '../Services/auth.service';
 import { NgForm } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,8 @@ export class LoginComponent {
     private auth:AuthService
   ) {}
   onSubmit(userForm:NgForm) {
+    console.log("IS PRODUCTION?: ",environment.production); 
+    console.log("IS PRODUCTION?: ",environment.domain); 
     if (userForm.valid)
     {
       this.auth.login(this.user)
