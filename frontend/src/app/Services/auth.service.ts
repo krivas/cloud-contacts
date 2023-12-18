@@ -23,7 +23,7 @@ export class AuthService {
      
      login(user:User)
      {
-      return this.http.post<number>(`${this.domain}/${this.endpoint}/login`,user)
+      return this.http.post<number>(`https://cloud-contacts-backend.azurewebsites.net/users/login`,user)
      }
       logout() {
         localStorage.removeItem("user");
